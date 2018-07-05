@@ -1,20 +1,15 @@
 package ja.burhanrashid52.base.di.modules
 
+
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-
-import java.util.concurrent.TimeUnit
-
-
 import dagger.Module
 import dagger.Provides
-import ja.burhanrashid52.base.BuildConfig
 import ja.burhanrashid52.base.api.ApiConstants
 import ja.burhanrashid52.base.api.ApiServices
 import ja.burhanrashid52.base.api.AuthInterceptor
@@ -22,17 +17,18 @@ import ja.burhanrashid52.base.di.scopes.BaseScope
 import ja.burhanrashid52.base.liveUtils.LiveDataCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import okhttp3.internal.platform.Platform
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module
 class BaseNetworkModule {
 
-    @SuppressLint("AuthLeak")
-    private val mBaseUrl = "http://multidots:thinker99@justnotify.dev1.in/"
+    companion object {
+        private const val mBaseUrl = "https://my-json-server.typicode.com/burhanrashid52/DemoApp/"
+    }
 
     @Provides
     @BaseScope

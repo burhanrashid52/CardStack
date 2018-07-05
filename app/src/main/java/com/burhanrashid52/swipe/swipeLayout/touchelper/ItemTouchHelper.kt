@@ -84,35 +84,35 @@ class ItemTouchHelper
      * The reference coordinates for the action start. For drag & drop, this is the time long
      * press is completed vs for swipe, this is the initial touch point.
      */
-    internal var mInitialTouchX: Float = 0.toFloat()
+    internal var mInitialTouchX: Float = 0F
 
-    internal var mInitialTouchY: Float = 0.toFloat()
-
-    /**
-     * Set when ItemTouchHelper is assigned to a RecyclerView.
-     */
-    internal var mSwipeEscapeVelocity: Float = 0.toFloat()
+    internal var mInitialTouchY: Float = 0F
 
     /**
      * Set when ItemTouchHelper is assigned to a RecyclerView.
      */
-    internal var mMaxSwipeVelocity: Float = 0.toFloat()
+    internal var mSwipeEscapeVelocity: Float = 0F
+
+    /**
+     * Set when ItemTouchHelper is assigned to a RecyclerView.
+     */
+    internal var mMaxSwipeVelocity: Float = 0F
 
     /**
      * The diff between the last event and initial touch.
      */
-    internal var mDx: Float = 0.toFloat()
+    internal var mDx: Float = 0F
 
-    internal var mDy: Float = 0.toFloat()
+    internal var mDy: Float = 0F
 
     /**
      * The coordinates of the selected view at the time it is selected. We record these values
      * when action starts so that we can consistently position it even if LayoutManager moves the
      * View.
      */
-    internal var mSelectedStartX: Float = 0.toFloat()
+    internal var mSelectedStartX: Float = 0F
 
-    internal var mSelectedStartY: Float = 0.toFloat()
+    internal var mSelectedStartY: Float = 0F
 
     /**
      * The pointer we are tracking.
@@ -165,7 +165,7 @@ class ItemTouchHelper
      */
     internal var mVelocityTracker: VelocityTracker? = null
 
-    //re-used list for selecting a swap target
+    //re-used moviesList for selecting a swap target
     private var mSwapTargets: MutableList<ViewHolder>? = null
 
     //re used for for sorting swap targets
@@ -527,7 +527,7 @@ class ItemTouchHelper
                                 postDispatchSwipe(this, swipeDir)
                             }
                         }
-                        // removed from the list after it is drawn for the last time
+                        // removed from the moviesList after it is drawn for the last time
                         if (mOverdrawChild === prevSelected.itemView) {
                             removeChildDrawingOrderCallbackIfNecessary(prevSelected.itemView)
                         }
@@ -751,7 +751,7 @@ class ItemTouchHelper
         if (mSelected != null && holder == mSelected) {
             select(null, ACTION_STATE_IDLE)
         } else {
-            endRecoverAnimation(holder, false) // this may push it into pending cleanup list.
+            endRecoverAnimation(holder, false) // this may push it into pending cleanup moviesList.
             if (mPendingCleanup.remove(holder.itemView)) {
                 mCallback.clearView(mRecyclerView, holder)
             }
@@ -1477,7 +1477,7 @@ class ItemTouchHelper
         }
 
         /**
-         * Called by ItemTouchHelper to select a drop target from the list of ViewHolders that
+         * Called by ItemTouchHelper to select a drop target from the moviesList of ViewHolders that
          * are under the dragged View.
          *
          *
@@ -1494,7 +1494,7 @@ class ItemTouchHelper
          * override it, make sure it does not do any expensive operations.
          *
          * @param selected The ViewHolder being dragged by the user.
-         * @param dropTargets The list of ViewHolder that are under the dragged View and
+         * @param dropTargets The moviesList of ViewHolder that are under the dragged View and
          * candidate as a drop.
          * @param curX The updated left value of the dragged View after drag translations
          * are applied. This value does not include margins added by
@@ -1859,7 +1859,7 @@ class ItemTouchHelper
          * You can override this method to decide how much RecyclerView should scroll in response
          * to this action. Default implementation calculates a value based on the amount of View
          * out of bounds and the time it spent there. The longer user keeps the View out of bounds,
-         * the faster the list will scroll. Similarly, the larger portion of the View is out of
+         * the faster the moviesList will scroll. Similarly, the larger portion of the View is out of
          * bounds, the faster the RecyclerView will scroll.
          *
          * @param recyclerView The RecyclerView instance to which ItemTouchHelper is
@@ -2190,10 +2190,15 @@ class ItemTouchHelper
         }
     }
 
-    open class RecoverAnimation internal constructor(internal val mViewHolder: ViewHolder, internal val mAnimationType: Int, internal val mActionState: Int, internal val mStartDx: Float,
-                                                     internal val mStartDy: Float, internal val mTargetX: Float, internal val mTargetY: Float) : Animator.AnimatorListener {
+    open class RecoverAnimation internal constructor(internal val mViewHolder: ViewHolder,
+                                                     internal val mAnimationType: Int,
+                                                     internal val mActionState: Int,
+                                                     private val mStartDx: Float,
+                                                     private val mStartDy: Float,
+                                                     private val mTargetX: Float,
+                                                     private val mTargetY: Float) : Animator.AnimatorListener {
 
-        private val mValueAnimator: ValueAnimator
+        private val mValueAnimator = ValueAnimator.ofFloat(0f, 1f)
 
         var mIsPendingCleanup: Boolean = false
 
@@ -2210,7 +2215,6 @@ class ItemTouchHelper
         private var mFraction: Float = 0.toFloat()
 
         init {
-            mValueAnimator = ValueAnimator.ofFloat(0f, 1f)
             mValueAnimator.addUpdateListener { animation -> setFraction(animation.animatedFraction) }
             mValueAnimator.setTarget(mViewHolder.itemView)
             mValueAnimator.addListener(this)
@@ -2353,11 +2357,11 @@ class ItemTouchHelper
 
         internal const val DIRECTION_FLAG_COUNT = 8
 
-        private val ACTION_MODE_IDLE_MASK = (1 shl DIRECTION_FLAG_COUNT) - 1
+        private const val ACTION_MODE_IDLE_MASK = (1 shl DIRECTION_FLAG_COUNT) - 1
 
-        internal val ACTION_MODE_SWIPE_MASK = ACTION_MODE_IDLE_MASK shl DIRECTION_FLAG_COUNT
+        internal const val ACTION_MODE_SWIPE_MASK = ACTION_MODE_IDLE_MASK shl DIRECTION_FLAG_COUNT
 
-        internal val ACTION_MODE_DRAG_MASK = ACTION_MODE_SWIPE_MASK shl DIRECTION_FLAG_COUNT
+        internal const val ACTION_MODE_DRAG_MASK = ACTION_MODE_SWIPE_MASK shl DIRECTION_FLAG_COUNT
 
         /**
          * The unit we are using to track velocity
