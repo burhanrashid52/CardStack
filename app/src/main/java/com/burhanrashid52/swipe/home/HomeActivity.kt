@@ -3,13 +3,13 @@ package com.burhanrashid52.swipe.home
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
-import android.widget.Toast
+import android.util.Log
 import com.burhanrashid52.swipe.R
-import com.burhanrashid52.swipe.base.BaseActivity
-import com.burhanrashid52.swipe.swipeLayout.CardItemTouchHelperCallback
-import com.burhanrashid52.swipe.swipeLayout.CardLayoutManager
-import com.burhanrashid52.swipe.swipeLayout.OnSwipeListener
+import com.burhanrashid52.swipe.swipeLayout.OnItemSwiped
+import com.burhanrashid52.swipe.swipeLayout.StackLayoutManager
+import com.burhanrashid52.swipe.swipeLayout.StackTouchHelperCallback
+import com.burhanrashid52.swipe.swipeLayout.touchelper.ItemTouchHelper
+import ja.burhanrashid52.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,46 +20,43 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         rvSwipe.itemAnimator = DefaultItemAnimator()
-        val numbers = mutableListOf(1, 2, 3, 4, 5, 6, 7)
+        val numbers = mutableListOf("1", "2", "3", "4", "5", "6", "7")
         val cardAdapter = CardsAdapter()
         rvSwipe.adapter = cardAdapter
         cardAdapter.list = numbers
-        val cardCallback = CardItemTouchHelperCallback(rvSwipe.adapter, numbers)
-        cardCallback.setOnSwipedListener(object : OnSwipeListener<Int> {
 
-            override fun onSwiping(viewHolder: RecyclerView.ViewHolder, ratio: Float, direction: Int) {
-                /* val myHolder = viewHolder as CardsAdapter.MyViewHolder
-                 viewHolder.itemView.alpha = 1 - Math.abs(ratio) * 0.2f
-                 if (direction == CardConfig.SWIPING_LEFT) {
-                     myHolder.dislikeImageView.setAlpha(Math.abs(ratio))
-                 } else if (direction == CardConfig.SWIPING_RIGHT) {
-                     myHolder.likeImageView.setAlpha(Math.abs(ratio))
-                 } else {
-                     myHolder.dislikeImageView.setAlpha(0f)
-                     myHolder.likeImageView.setAlpha(0f)
-                 }*/
+        val stackTouchHelperCallback: StackTouchHelperCallback = object : StackTouchHelperCallback(object : OnItemSwiped {
+            override fun onItemSwiped() {
+                cardAdapter.removeTopItem()
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, o: Int, direction: Int) {
-                /*         val myHolder = viewHolder as MyAdapter.MyViewHolder
-                         viewHolder.itemView.alpha = 1f
-                         myHolder.dislikeImageView.setAlpha(0f)
-                         myHolder.likeImageView.setAlpha(0f)
-                         Toast.makeText(this@HomeActivity, if (direction == CardConfig.SWIPED_LEFT) "swiped left" else "swiped right", Toast.LENGTH_SHORT).show()*/
+            override fun onItemSwipedLeft() {
+                Log.e("SWIPE", "LEFT")
             }
 
-            override fun onSwipedClear() {
-                Toast.makeText(this@HomeActivity, "data clear", Toast.LENGTH_SHORT).show()
-                rvSwipe.postDelayed({
-                    //initData()
-                    rvSwipe.adapter.notifyDataSetChanged()
-                }, 3000L)
+            override fun onItemSwipedRight() {
+                Log.e("SWIPE", "RIGHT")
             }
 
-        })
-        val touchHelper = ItemTouchHelper(cardCallback)
-        val cardLayoutManager = CardLayoutManager(rvSwipe, touchHelper)
-        rvSwipe.layoutManager = cardLayoutManager
-        touchHelper.attachToRecyclerView(rvSwipe)
+            override fun onItemSwipedUp() {
+                Log.e("SWIPE", "UP")
+            }
+
+            override fun onItemSwipedDown() {
+                Log.e("SWIPE", "DOWN")
+            }
+        }) {
+            override fun getAllowedSwipeDirectionsMovementFlags(viewHolder: RecyclerView.ViewHolder): Int {
+                return ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(stackTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(rvSwipe)
+        rvSwipe.layoutManager = StackLayoutManager().setAngle(10)
+                .setAnimationDuratuion(450)
+                .setMaxShowCount(3)
+                .setScaleGap(0.1f)
+                .setTransYGap(0)
+        rvSwipe.adapter = cardAdapter
     }
 }
