@@ -4,10 +4,19 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../misc/creds.keystore')
+            storePassword 'android'
+        }
+    }
 
     compileSdkVersion Versions.compile_sdk_version
+
     defaultConfig {
-        applicationId "com.burhanrashid52.swipe"
+        applicationId "com.burhanrashid52.cards"
         minSdkVersion Versions.min_sdk_version
         targetSdkVersion Versions.target_sdk_version
         versionCode Versions.version_code
@@ -17,7 +26,9 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+
         release {
+            signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -27,7 +38,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':base')
-
     implementation SupportDeps.vector_drawable
     implementation SupportDeps.appcompact_v7
     kapt DaggerDeps.processer
@@ -35,5 +45,4 @@ dependencies {
     kapt ArchComponents.room_compiler
     kapt ArchComponents.life_cycle_compiler
     implementation OtherDeps.multidex
-
 }
