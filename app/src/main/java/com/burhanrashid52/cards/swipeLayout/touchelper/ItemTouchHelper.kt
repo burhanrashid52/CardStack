@@ -165,7 +165,7 @@ class ItemTouchHelper
      */
     internal var mVelocityTracker: VelocityTracker? = null
 
-    //re-used moviesList for selecting a swap target
+    //re-used characterList for selecting a swap target
     private var mSwapTargets: MutableList<ViewHolder>? = null
 
     //re used for for sorting swap targets
@@ -527,7 +527,7 @@ class ItemTouchHelper
                                 postDispatchSwipe(this, swipeDir)
                             }
                         }
-                        // removed from the moviesList after it is drawn for the last time
+                        // removed from the characterList after it is drawn for the last time
                         if (mOverdrawChild === prevSelected.itemView) {
                             removeChildDrawingOrderCallbackIfNecessary(prevSelected.itemView)
                         }
@@ -751,7 +751,7 @@ class ItemTouchHelper
         if (mSelected != null && holder == mSelected) {
             select(null, ACTION_STATE_IDLE)
         } else {
-            endRecoverAnimation(holder, false) // this may push it into pending cleanup moviesList.
+            endRecoverAnimation(holder, false) // this may push it into pending cleanup characterList.
             if (mPendingCleanup.remove(holder.itemView)) {
                 mCallback.clearView(mRecyclerView, holder)
             }
@@ -1477,7 +1477,7 @@ class ItemTouchHelper
         }
 
         /**
-         * Called by ItemTouchHelper to select a drop target from the moviesList of ViewHolders that
+         * Called by ItemTouchHelper to select a drop target from the characterList of ViewHolders that
          * are under the dragged View.
          *
          *
@@ -1494,7 +1494,7 @@ class ItemTouchHelper
          * override it, make sure it does not do any expensive operations.
          *
          * @param selected The ViewHolder being dragged by the user.
-         * @param dropTargets The moviesList of ViewHolder that are under the dragged View and
+         * @param dropTargets The characterList of ViewHolder that are under the dragged View and
          * candidate as a drop.
          * @param curX The updated left value of the dragged View after drag translations
          * are applied. This value does not include margins added by
@@ -1859,7 +1859,7 @@ class ItemTouchHelper
          * You can override this method to decide how much RecyclerView should scroll in response
          * to this action. Default implementation calculates a value based on the amount of View
          * out of bounds and the time it spent there. The longer user keeps the View out of bounds,
-         * the faster the moviesList will scroll. Similarly, the larger portion of the View is out of
+         * the faster the characterList will scroll. Similarly, the larger portion of the View is out of
          * bounds, the faster the RecyclerView will scroll.
          *
          * @param recyclerView The RecyclerView instance to which ItemTouchHelper is

@@ -17,7 +17,7 @@ class AppComponent {
     /* @Provides
      @AppScope
      fun provideRoomDB(application: Application): AppDatabase {
-         return Room.databaseBuilder(application.applicationContext, AppDatabase::class.java, "movies-db")
+         return Room.databaseBuilder(application.applicationContext, AppDatabase::class.java, "characters-db")
                  .fallbackToDestructiveMigration()
                  .build()
      }

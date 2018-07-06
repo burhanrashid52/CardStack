@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.burhanrashid52.cards.R
-import com.burhanrashid52.cards.home.models.Movies
+import com.burhanrashid52.cards.home.models.Character
 import ja.burhanrashid52.base.loadFromUrl
 import kotlinx.android.synthetic.main.row_cards.view.*
 
 class CardsAdapter : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
 
-    var moviesList = mutableListOf<Movies>()
+    var characterList = mutableListOf<Character>()
         set(value) {
             field.clear()
             field.addAll(value)
@@ -24,24 +24,24 @@ class CardsAdapter : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        holder.bind(moviesList[position])
+        holder.bind(characterList[position])
     }
 
     override fun getItemCount(): Int {
-        return moviesList.size
+        return characterList.size
     }
 
     fun removeTopItem() {
-        moviesList.removeAt(0)
+        characterList.removeAt(0)
         notifyDataSetChanged()
     }
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movies: Movies) {
+        fun bind(character: Character) {
             with(itemView) {
-                imgProfilePic.loadFromUrl(movies.poster)
-                txtName.text = movies.title
-                txtDescription.text = movies.description
+                imgProfilePic.loadFromUrl(character.poster)
+                txtName.text = character.title
+                txtDescription.text = character.description
             }
         }
     }

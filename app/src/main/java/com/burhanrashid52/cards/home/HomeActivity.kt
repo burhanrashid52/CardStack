@@ -6,8 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import com.burhanrashid52.cards.R
-import com.burhanrashid52.cards.R.id.rvSwipe
-import com.burhanrashid52.cards.R.id.viewFlipper
 import com.burhanrashid52.cards.swipeLayout.OnItemSwiped
 import com.burhanrashid52.cards.swipeLayout.StackLayoutManager
 import com.burhanrashid52.cards.swipeLayout.StackTouchHelperCallback
@@ -16,7 +14,6 @@ import ja.burhanrashid52.base.BaseActivity
 import ja.burhanrashid52.base.getViewModel
 import ja.burhanrashid52.base.repo.Status.*
 import ja.burhanrashid52.base.showSnackbar
-import ja.burhanrashid52.base.toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -72,7 +69,7 @@ class HomeActivity : BaseActivity() {
             when (it?.status) {
                 SUCCESS -> {
                     viewFlipper.displayedChild = 1
-                    cardAdapter.moviesList = it.data?.movies?.toMutableList()!!
+                    cardAdapter.characterList = it.data?.characters?.toMutableList()!!
                 }
                 ERROR -> {
                     viewFlipper.displayedChild = 2
