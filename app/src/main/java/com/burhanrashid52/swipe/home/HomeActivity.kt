@@ -33,6 +33,7 @@ class HomeActivity : BaseActivity() {
         val stackTouchHelperCallback: StackTouchHelperCallback = object : StackTouchHelperCallback(object : OnItemSwiped {
             override fun onItemSwiped() {
                 cardAdapter.removeTopItem()
+                viewFlipper.displayedChild = if (cardAdapter.itemCount == 0) 2 else 1
             }
 
             override fun onItemSwipedLeft() {
@@ -52,7 +53,10 @@ class HomeActivity : BaseActivity() {
             }
         }) {
             override fun getAllowedSwipeDirectionsMovementFlags(viewHolder: RecyclerView.ViewHolder): Int {
-                return ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT or ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                return ItemTouchHelper.RIGHT or
+                        ItemTouchHelper.LEFT or
+                        ItemTouchHelper.UP or
+                        ItemTouchHelper.DOWN
             }
         }
         val itemTouchHelper = ItemTouchHelper(stackTouchHelperCallback)
@@ -67,14 +71,14 @@ class HomeActivity : BaseActivity() {
         homeViewModel.fetchMovies().observe(this, Observer {
             when (it?.status) {
                 SUCCESS -> {
-                    hideLoading()
+                    viewFlipper.displayedChild = 1
                     cardAdapter.moviesList = it.data?.movies?.toMutableList()!!
                 }
                 ERROR -> {
-                    hideLoading()
+                    viewFlipper.displayedChild = 2
                     toast("${it.message}")
                 }
-                LOADING -> showLoading()
+                LOADING -> viewFlipper.displayedChild = 0
             }
         })
     }

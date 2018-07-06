@@ -4,7 +4,7 @@
 object Versions {
     var version_code = 1
     var version_name = "1.0"
-    var compile_sdk_version = "android-P"
+    var compile_sdk_version = 28
     var target_sdk_version = 27
     var min_sdk_version = 19
 
