@@ -25,5 +25,5 @@ class HomeViewModel : BaseViewModel() {
         Timber.e(repository.toString())
     }
 
-    fun fetchMovies() = repository.getMovies()
+    fun fetchCharacters() = repository.getCharacters()
 }

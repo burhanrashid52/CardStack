@@ -31,6 +31,7 @@ class HomeActivity : BaseActivity() {
         val cardAdapter = CardsAdapter()
         rvSwipe.adapter = cardAdapter
 
+        //Setup the [StackLayoutManager]
         val stackTouchHelperCallback: StackTouchHelperCallback = object : StackTouchHelperCallback(object : OnItemSwiped {
             override fun onItemSwiped() {
                 cardAdapter.removeTopItem()
@@ -65,7 +66,8 @@ class HomeActivity : BaseActivity() {
         rvSwipe.layoutManager = StackLayoutManager()
         rvSwipe.adapter = cardAdapter
 
-        homeViewModel.fetchMovies().observe(this, Observer {
+        //Fetch characters details and observer and changes here
+        homeViewModel.fetchCharacters().observe(this, Observer {
             when (it?.status) {
                 SUCCESS -> {
                     viewFlipper.displayedChild = 1

@@ -2,7 +2,10 @@ package com.burhanrashid52.cards.data.remote
 
 import com.google.gson.annotations.SerializedName
 
-data class BaseResponse<T>(
+/**
+ * Base response to handle error and pre define status codes
+ */
+data class BaseResponse<out T>(
 
         @field:SerializedName("result")
         val result: T,
@@ -11,6 +14,9 @@ data class BaseResponse<T>(
         val status: Int = 0
 )
 
+/**
+ * Base result which need to be extended to base response generic class
+ */
 open class BaseResult {
 
     @field:SerializedName("message")

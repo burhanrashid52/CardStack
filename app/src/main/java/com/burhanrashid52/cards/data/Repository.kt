@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 class Repository @Inject constructor(private val webService: AppServices, private val application: Application) {
 
-    fun getMovies(): LiveData<Resource<CharacterResponse>> {
+    fun getCharacters(): LiveData<Resource<CharacterResponse>> {
         val mutableLiveData = MutableLiveData<Resource<CharacterResponse>>()
         mutableLiveData.value = Resource.loading(null)
         webService.getMovies().enqueue(ResponseCallback {

@@ -7,6 +7,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.UnknownHostException
 
 
 /**
@@ -15,12 +16,16 @@ import retrofit2.Response
  */
 class ResponseCallback<T : BaseResult>(private val responseResource: Resource<T>.() -> Unit) : Callback<BaseResponse<T>> {
 
-    override fun onFailure(call: Call<BaseResponse<T>>?, t: Throwable?) {
-        Resource.error(t?.message ?: "Something went wrong", null).responseResource()
+    override fun onFailure(call: Call<BaseResponse<T>>, t: Throwable) {
+        if (t is UnknownHostException) {
+            Resource.error("No Internet Available", null).responseResource()
+        } else {
+            Resource.error(t.message ?: "Something went wrong", null).responseResource()
+        }
     }
 
-    override fun onResponse(call: Call<BaseResponse<T>>?, response: Response<BaseResponse<T>>?) {
-        if (response?.isSuccessful!!) {
+    override fun onResponse(call: Call<BaseResponse<T>>, response: Response<BaseResponse<T>>) {
+        if (response.isSuccessful) {
             if (response.body()?.status in 200..299)
                 Resource.success(response.body()?.result).responseResource()
             else

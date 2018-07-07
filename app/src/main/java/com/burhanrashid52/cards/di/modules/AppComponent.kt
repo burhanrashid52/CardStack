@@ -7,23 +7,12 @@ import dagger.Provides
 import retrofit2.Retrofit
 
 
+/**
+ * App level component which provides dependencies of :app module level
+ */
 @Module
 class AppComponent {
-
     @Provides
     @AppScope
     fun provideRetrofitClient(retrofit: Retrofit) = retrofit.create(AppServices::class.java)!!
-
-    /* @Provides
-     @AppScope
-     fun provideRoomDB(application: Application): AppDatabase {
-         return Room.databaseBuilder(application.applicationContext, AppDatabase::class.java, "characters-db")
-                 .fallbackToDestructiveMigration()
-                 .build()
-     }
-
-     @Provides
-     @AppScope
-     fun provideMoviesDao(appDatabase: AppDatabase) = appDatabase.moviesDao()*/
-
 }

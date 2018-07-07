@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 class BaseNetworkModule {
 
     companion object {
-        private const val mBaseUrl = "https://my-json-server.typicode.com/burhanrashid52/DemoApp/"
+        private const val mBaseUrl = "https://my-json-server.typicode.com/burhanrashid52/CardStack/"
     }
 
     @Provides
