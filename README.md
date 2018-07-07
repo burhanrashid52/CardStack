@@ -1,6 +1,6 @@
 # CardStack
 
-Buttery card stack smooth animations on a stacking RecyclerView
+Buttery card stack smooth animations on a stacking RecyclerView.Its developed with MVVM architecture pattern.
 
 ## How it looks ?
 ![](https://i.imgur.com/dJnjmgE.gif)
