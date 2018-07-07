@@ -3,6 +3,9 @@
 Buttery card stack smooth animations on a stacking RecyclerView.Its developed with MVVM architecture pattern.
 
 ## How it looks ?
+
+You can download APK from [HERE](https://drive.google.com/file/d/199BkCFfKLU3Aeukh9_TXUy9MNUt07yZS/view)
+
 ![](https://i.imgur.com/dJnjmgE.gif)
 
 
